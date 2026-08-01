@@ -1,0 +1,89 @@
+[
+  {
+    "id": "cloud-platform",
+    "order": 0,
+    "domain": "Cloud & Platform",
+    "blurb": "Running production cloud estates for regulated workloads — not just provisioning them.",
+    "items": [
+      { "name": "Google Cloud Platform", "depth": "primary", "years": 4 },
+      { "name": "Microsoft 365 administration", "depth": "primary", "years": 8 },
+      { "name": "Google Workspace administration", "depth": "primary", "years": 4 },
+      { "name": "On-prem to cloud migration", "depth": "primary", "years": 7 },
+      { "name": "Cloud Run / containers", "depth": "working" },
+      { "name": "Microsoft Azure", "depth": "working", "years": 5 }
+    ]
+  },
+  {
+    "id": "networking",
+    "order": 1,
+    "domain": "Networking & Infrastructure",
+    "blurb": "Designing the topology, then owning the cabling crew and the circuit order that make it real.",
+    "items": [
+      { "name": "Fortinet firewalls & switching", "depth": "primary", "years": 4 },
+      { "name": "Network topology & VLAN design", "depth": "primary", "years": 9 },
+      { "name": "IPSEC site-to-site VPN", "depth": "primary" },
+      { "name": "ISP provisioning & structured cabling", "depth": "primary" },
+      { "name": "Cisco", "depth": "working" },
+      { "name": "Meraki", "depth": "working" },
+      { "name": "SonicWall", "depth": "working" },
+      { "name": "PoE / physical security networks", "depth": "working" }
+    ]
+  },
+  {
+    "id": "security",
+    "order": 2,
+    "domain": "Security & Compliance",
+    "blurb": "Security as a recurring, evidenced program — the kind you can hand an auditor.",
+    "items": [
+      { "name": "Vulnerability management programs", "depth": "primary", "years": 4 },
+      { "name": "Endpoint detection & response", "depth": "primary", "years": 4 },
+      { "name": "HIPAA controls & validation", "depth": "primary", "years": 4 },
+      { "name": "IAM / SSO / MFA (Okta)", "depth": "primary", "years": 5 },
+      { "name": "Patch management & hardening", "depth": "primary" },
+      { "name": "WAF & edge protection", "depth": "working" },
+      { "name": "Network detection & response", "depth": "working" }
+    ]
+  },
+  {
+    "id": "systems",
+    "order": 3,
+    "domain": "Systems & Virtualization",
+    "blurb": "Ten years of Windows, macOS, and Linux estates that had to keep working.",
+    "items": [
+      { "name": "Windows Server & Active Directory", "depth": "primary", "years": 10 },
+      { "name": "Windows / macOS endpoint administration", "depth": "primary", "years": 10 },
+      { "name": "Disaster recovery & backup policy", "depth": "working" },
+      { "name": "Linux administration", "depth": "working", "years": 6 },
+      { "name": "Hyper-V", "depth": "working" },
+      { "name": "VMware", "depth": "working" }
+    ]
+  },
+  {
+    "id": "automation",
+    "order": 4,
+    "domain": "Automation & Engineering",
+    "blurb": "If I have answered the same ticket three times, it becomes a script.",
+    "items": [
+      { "name": "PowerShell", "depth": "primary", "years": 9 },
+      { "name": "Bash", "depth": "primary", "years": 9 },
+      { "name": "GitLab CI/CD", "depth": "working" },
+      { "name": "Python", "depth": "working" },
+      { "name": "PostgreSQL administration", "depth": "working" },
+      { "name": "API & database troubleshooting", "depth": "working" }
+    ]
+  },
+  {
+    "id": "delivery",
+    "order": 5,
+    "domain": "Business & Delivery",
+    "blurb": "The part of infrastructure work that happens in a calendar and a budget.",
+    "items": [
+      { "name": "Vendor management & procurement", "depth": "primary", "years": 9 },
+      { "name": "Multi-stakeholder service delivery", "depth": "primary", "years": 5 },
+      { "name": "Migration & cutover planning", "depth": "primary", "years": 8 },
+      { "name": "Documentation & asset management", "depth": "primary" },
+      { "name": "Ticketing & service operations", "depth": "working" },
+      { "name": "Budget & lead-time planning", "depth": "working" }
+    ]
+  }
+]

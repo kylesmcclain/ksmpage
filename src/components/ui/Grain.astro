@@ -1,0 +1,40 @@
+---
+/**
+ * Fixed grain overlay.
+ *
+ * Near-black surfaces band badly on 8-bit displays, especially across the large flat areas
+ * this layout uses. A film-grain tile at low opacity dithers those gradients away and is the
+ * difference between "flat CSS" and something that reads as printed.
+ *
+ * The tile is an inline SVG `feTurbulence` data URI: no network request, no runtime filter,
+ * and no cost beyond a single composited layer. It lives in the stylesheet rather than in a
+ * `style` attribute — CSP hashes cover `<style>` elements but never style attributes, so an
+ * inline attribute here would be silently dropped by our own policy.
+ *
+ * Safari's `overlay` blending is markedly more expensive, so it gets a lighter pass. Hidden
+ * entirely under `prefers-reduced-motion` via the rule in global.css.
+ */
+---
+
+<div class="grain" aria-hidden="true"></div>
+
+<style>
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+    background-repeat: repeat;
+    mix-blend-mode: overlay;
+    opacity: var(--grain-opacity);
+  }
+
+  /* Safari composites `overlay` far more expensively than Chromium. */
+  @supports (-webkit-hyphens: none) {
+    .grain {
+      opacity: calc(var(--grain-opacity) * 0.5);
+    }
+  }
+</style>

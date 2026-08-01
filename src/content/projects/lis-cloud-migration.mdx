@@ -1,0 +1,74 @@
+---
+title: 'Migrating a Clinical LIS Off a Single-Board Computer'
+summary: 'A regulated Laboratory Information System was running on a consumer single-board computer between PCR instruments and external health portals. It moved to Google Cloud without going dark.'
+vertical: 'Clinical Diagnostics'
+discipline: 'Cloud & DevOps'
+order: 0
+featured: true
+period: '2022–2025'
+situation: 'A high-volume infectious-disease testing operation ran its Laboratory Information System on a single consumer-grade single-board computer. That one device sat between on-premises PCR testing instruments and external healthcare portals, carrying regulated patient results across the boundary.'
+constraint: 'The system could not go dark. Live instrument integrations and downstream portal handoffs had to keep working throughout, and every path touched PHI — so HIPAA controls had to hold at each step of the transition rather than being retrofitted afterwards.'
+outcomes:
+  - label: 'Platform uptime'
+    value: '99.9%'
+    note: 'Sustained for clinical result processing after the cutover.'
+  - label: 'Single point of failure'
+    value: 'Removed'
+    note: 'A consumer device was eliminated from the middle of a regulated clinical workflow.'
+  - label: 'Integration loss'
+    value: 'None'
+    note: 'Instrument and external portal interfaces survived the migration intact.'
+businessImpact: 'This removed a catastrophic-loss scenario for regulated patient result data — the kind of finding that stops an audit and the kind of outage that stops testing revenue. It converted an undocumented liability into a defensible, evidenced platform, and did it without pausing clinical operations for a single day.'
+stack:
+  - 'Google Cloud'
+  - 'PostgreSQL'
+  - 'GitLab CI/CD'
+  - 'HIPAA controls'
+  - 'LIS / LIMS'
+  - 'Instrument integration'
+  - 'Compute Engine'
+capabilities:
+  - 'Cloud migration'
+  - 'Regulated data handling'
+  - 'Cutover planning'
+  - 'Vendor & clinical-team coordination'
+---
+
+## What was actually wrong
+
+The failure mode was not subtle. A single-board computer with no redundancy, no managed backup,
+and no meaningful access control sat on the critical path between laboratory instruments and the
+outside world. Every result for a high-volume assay programme crossed it. If the SD card failed on
+a Tuesday, the lab would have lost both its result pipeline and its record of what had already been
+reported.
+
+It had also grown organically, which meant nobody could hand an auditor a diagram of it.
+
+## Approach
+
+The migration was sequenced so that at no point did the lab depend on something untested.
+
+**Rebuild rather than lift-and-shift.** The legacy system was not worth carrying forward as-is.
+The platform was rebuilt on managed Google Cloud infrastructure with a PostgreSQL backend and a
+GitLab-based deployment path, so that future changes had a repeatable route to production instead
+of being applied by hand.
+
+**Preserve the edges.** The two integration boundaries — on-premises PCR instrumentation on one
+side, external healthcare portal interfaces on the other — were treated as fixed contracts. The
+platform underneath them changed completely; what they saw did not.
+
+**Compliance as an architecture input.** Access control, backup policy, and data handling were
+specified before the cutover rather than validated after it. HIPAA obligations shaped the IAM
+model and the backup posture directly.
+
+**Partnered delivery.** The replacement LIS/LIMS was built, tested, and deployed alongside the
+software team. Infrastructure ownership stayed with me; application logic stayed with them; the
+integration surface was agreed rather than assumed.
+
+## Result
+
+Clinical result processing runs on resilient managed infrastructure at 99.9% uptime. High-volume
+infectious-disease assay results flow end to end without manual intervention, and the instrument
+and portal integrations that the lab's throughput depends on were never interrupted.
+
+The environment is now documentable, which — in a regulated setting — is most of the point.

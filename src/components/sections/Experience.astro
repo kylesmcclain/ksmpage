@@ -1,0 +1,65 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Tag from '../ui/Tag.astro';
+import { formatRange, tenure } from '../../lib/format';
+
+const roles = (await getCollection('experience')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section id="experience" class="max-w-page px-gutter mx-auto scroll-mt-20 py-24">
+  <SectionHeading
+    index={3}
+    eyebrow="Experience"
+    title="Where the record was built"
+    lede="Three environments: a regulated clinical lab, a seventeen-client managed services portfolio, and a public-sector district. Each one taught a different half of the job."
+  />
+
+  <ol class="space-y-px">
+    {
+      roles.map((role) => (
+        <li class="border-line-subtle bg-surface-1/40 border p-6 first:rounded-t-lg last:rounded-b-lg sm:p-8">
+          <div class="flex flex-col gap-4 lg:flex-row lg:gap-12">
+            <div class="lg:w-64 lg:flex-none">
+              <p class="text-faint text-micro tabular font-mono">
+                {formatRange(role.data.start, role.data.end)}
+              </p>
+              <h3 class="text-hi text-title-3 mt-2">{role.data.role}</h3>
+              <p class="text-accent text-body-sm mt-0.5">{role.data.org}</p>
+              <p class="text-faint text-micro tabular mt-2 font-mono">
+                {tenure(role.data.start, role.data.end)}
+              </p>
+            </div>
+
+            <div class="min-w-0 flex-1">
+              <p class="text-body text-body-sm">{role.data.scope}</p>
+
+              <ul class="mt-5 space-y-2.5">
+                {role.data.highlights.map((highlight) => (
+                  <li class="text-muted text-body-sm flex gap-3">
+                    <span
+                      class="text-accent-low mt-[0.6em] size-1 flex-none rounded-full bg-current"
+                      aria-hidden="true"
+                    />
+                    <span>{highlight}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <ul
+                class="mt-5 flex flex-wrap gap-1.5"
+                aria-label={`Technologies at ${role.data.org}`}
+              >
+                {role.data.stack.map((tech) => (
+                  <li>
+                    <Tag>{tech}</Tag>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>

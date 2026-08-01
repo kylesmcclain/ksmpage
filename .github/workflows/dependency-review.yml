@@ -1,0 +1,25 @@
+name: Dependency Review
+
+# Blocks a pull request that introduces a dependency with a known vulnerability, before it
+# reaches main — rather than discovering it in a Dependabot alert afterwards.
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    name: Review dependency changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: moderate
+          comment-summary-in-pr: on-failure

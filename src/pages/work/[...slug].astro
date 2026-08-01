@@ -1,0 +1,209 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Tag from '../../components/ui/Tag.astro';
+import { url } from '../../lib/site';
+
+export const getStaticPaths = (async () => {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}) satisfies GetStaticPaths;
+
+const { project } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+
+const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const index = all.findIndex((p) => p.id === project.id);
+const next = all[(index + 1) % all.length];
+---
+
+<BaseLayout title={data.title} description={data.summary}>
+  <article>
+    <header class="border-line-subtle border-b">
+      <div class="max-w-page px-gutter mx-auto pt-14 pb-12">
+        <a
+          href={url('/#work')}
+          class="text-muted hover:text-accent text-micro inline-flex items-center gap-1.5 font-mono transition-colors duration-150"
+        >
+          <span aria-hidden="true">←</span> All case studies
+        </a>
+
+        <div class="mt-6 flex flex-wrap items-center gap-2">
+          <Tag variant="accent">{data.discipline}</Tag>
+          <Tag>{data.vertical}</Tag>
+          <span class="text-faint text-micro tabular font-mono">{data.period}</span>
+        </div>
+
+        <h1 class="text-hi text-display-2 mt-5 max-w-[22ch]">{data.title}</h1>
+        <p class="text-muted prose-measure text-body-lg mt-5">{data.summary}</p>
+      </div>
+    </header>
+
+    {/* Outcomes first: a hiring manager skimming should get the result before the narrative. */}
+    <div class="border-line-subtle border-b">
+      <dl
+        class="divide-line-subtle max-w-page px-gutter mx-auto grid divide-y sm:grid-cols-3 sm:divide-x sm:divide-y-0"
+      >
+        {
+          data.outcomes.map((outcome) => (
+            <div class="py-6 sm:px-6 sm:first:pl-0 sm:last:pr-0">
+              <dt class="text-muted text-caption">{outcome.label}</dt>
+              <dd>
+                <span class="text-accent text-title-1 tabular mt-1 block">{outcome.value}</span>
+                <span class="text-faint text-caption mt-1.5 block">{outcome.note}</span>
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <div class="max-w-page px-gutter mx-auto grid gap-12 py-14 lg:grid-cols-[minmax(0,1fr)_18rem]">
+      <div class="min-w-0">
+        {
+          /* Label rail. Every case study repeats the same five labels, so they get a column of
+            their own rather than a heading stacked above each paragraph — the page reads as a
+            structured document and a reader can scan one axis instead of two. */
+        }
+        <div class="grid gap-x-8 gap-y-2 sm:grid-cols-[7rem_minmax(0,1fr)] sm:gap-y-10">
+          <h2 id="situation" class="eyebrow text-muted sm:pt-2 sm:text-right">Situation</h2>
+          <p class="text-body prose-measure text-body-lg">{data.situation}</p>
+
+          <h2 id="constraint" class="eyebrow text-muted mt-8 sm:mt-0 sm:pt-2 sm:text-right">
+            Constraint
+          </h2>
+          <p class="text-body prose-measure text-body-lg">{data.constraint}</p>
+        </div>
+
+        <div class="prose-body border-line-subtle mt-12 border-t pt-10">
+          <Content />
+        </div>
+
+        <section
+          aria-labelledby="impact"
+          class="border-accent-low/40 bg-accent-wash mt-12 rounded-lg border p-6 sm:p-7"
+        >
+          <h2 id="impact" class="eyebrow text-accent-soft">Business impact</h2>
+          <p class="text-body prose-measure text-body-lg mt-3">{data.businessImpact}</p>
+        </section>
+      </div>
+
+      <aside class="lg:sticky lg:top-20 lg:self-start">
+        <h2 class="eyebrow text-muted">Stack</h2>
+        <ul class="mt-3 flex flex-wrap gap-1.5">
+          {
+            data.stack.map((tech) => (
+              <li>
+                <Tag>{tech}</Tag>
+              </li>
+            ))
+          }
+        </ul>
+
+        <h2 class="eyebrow text-muted mt-8">Capabilities</h2>
+        <ul class="border-line-subtle mt-3 border-t">
+          {
+            data.capabilities.map((capability) => (
+              <li class="border-line-subtle text-body text-body-sm border-b py-2">{capability}</li>
+            ))
+          }
+        </ul>
+      </aside>
+    </div>
+
+    {
+      next && next.id !== project.id && (
+        <nav
+          aria-label="Next case study"
+          class="border-line-subtle max-w-page px-gutter mx-auto border-t py-10"
+        >
+          <a href={url(`/work/${next.id}`)} class="group block">
+            <span class="eyebrow text-faint">Next case study</span>
+            <span class="text-hi group-hover:text-accent text-title-2 mt-2 block transition-colors duration-150">
+              {next.data.title}
+            </span>
+          </a>
+        </nav>
+      )
+    }
+  </article>
+</BaseLayout>
+
+<style>
+  /* Scoped prose styling for rendered MDX. Tailwind's typography plugin is not installed —
+     the body copy here is narrow enough that a dozen rules beat a 40 KB dependency. */
+  .prose-body :global(h2) {
+    font-size: var(--text-title-2);
+    line-height: 1.22;
+    letter-spacing: -0.022em;
+    font-weight: 585;
+    color: var(--text-hi);
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose-body :global(h3) {
+    font-size: var(--text-title-3);
+    font-weight: 585;
+    color: var(--text-hi);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .prose-body :global(p) {
+    color: var(--text);
+    max-width: 68ch;
+    margin-bottom: 1.1rem;
+  }
+
+  .prose-body :global(strong) {
+    color: var(--text-hi);
+    font-weight: 585;
+  }
+
+  .prose-body :global(a) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .prose-body :global(ul) {
+    list-style: disc;
+    padding-left: 1.25rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .prose-body :global(li) {
+    color: var(--text);
+    max-width: 66ch;
+    margin-bottom: 0.4rem;
+  }
+
+  .prose-body :global(code) {
+    background: var(--surface-sunken);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xs);
+    padding: 0.1em 0.35em;
+    font-size: 0.9em;
+  }
+
+  .prose-body :global(pre) {
+    background: var(--surface-sunken);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.15rem;
+    overflow-x: auto;
+    margin-bottom: 1.25rem;
+  }
+
+  .prose-body :global(pre code) {
+    background: none;
+    border: 0;
+    padding: 0;
+  }
+</style>

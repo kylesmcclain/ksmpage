@@ -1,0 +1,77 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { depthLabel } from '../../lib/format';
+
+const groups = (await getCollection('skills')).sort((a, b) => a.data.order - b.data.order);
+
+/**
+ * Depth is rendered as a word, not a bar. Percentage meters ("AWS ████░░ 85%") are the
+ * single most discredited pattern in this genre — nobody has ever believed them, and they
+ * invite an obvious question the bar cannot answer. A stated definition plus an honest
+ * distribution is more persuasive than any graphic.
+ */
+const depthStyles = {
+  primary: 'text-accent',
+  working: 'text-muted',
+  familiar: 'text-faint',
+} as const;
+---
+
+<section id="capabilities" class="max-w-page px-gutter mx-auto scroll-mt-20 py-24">
+  <SectionHeading
+    index={4}
+    eyebrow="Capabilities"
+    title="What I actually operate"
+    lede="Graded honestly, because an unqualified list of forty technologies tells a hiring manager nothing. The 'primary' claims are the ones worth interviewing on."
+  />
+
+  <dl class="border-line-subtle text-caption mb-10 flex flex-wrap gap-x-8 gap-y-2 border-y py-4">
+    <div class="flex gap-2">
+      <dt class="text-accent text-micro font-mono tracking-wider uppercase">Primary</dt>
+      <dd class="text-faint">Built and owned it in production</dd>
+    </div>
+    <div class="flex gap-2">
+      <dt class="text-muted text-micro font-mono tracking-wider uppercase">Working</dt>
+      <dd class="text-faint">Deployed and operated it competently</dd>
+    </div>
+    <div class="flex gap-2">
+      <dt class="text-faint text-micro font-mono tracking-wider uppercase">Familiar</dt>
+      <dd class="text-faint">Supported or worked adjacent to it</dd>
+    </div>
+  </dl>
+
+  <div class="grid gap-x-10 gap-y-12 md:grid-cols-2 xl:grid-cols-3">
+    {
+      groups.map((group) => (
+        <section aria-labelledby={`cap-${group.data.id}`}>
+          <h3 id={`cap-${group.data.id}`} class="text-hi text-title-3">
+            {group.data.domain}
+          </h3>
+          <p class="text-faint text-caption mt-1.5">{group.data.blurb}</p>
+
+          <ul class="border-line-subtle mt-4 border-t">
+            {group.data.items.map((item) => (
+              <li class="border-line-subtle flex items-baseline justify-between gap-4 border-b py-2.5">
+                <span class="text-body text-body-sm">{item.name}</span>
+                <span class="flex flex-none items-baseline gap-2">
+                  {item.years !== undefined && (
+                    <span class="text-faint text-micro tabular font-mono">{item.years}y</span>
+                  )}
+                  <span
+                    class:list={[
+                      'text-micro font-mono tracking-wider uppercase',
+                      depthStyles[item.depth],
+                    ]}
+                  >
+                    {depthLabel(item.depth)}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</section>

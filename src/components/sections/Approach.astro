@@ -1,0 +1,38 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { numeral } from '../../lib/format';
+
+const principles = (await getCollection('principles')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section id="approach" class="max-w-page px-gutter mx-auto scroll-mt-20 py-24">
+  <SectionHeading
+    index={2}
+    eyebrow="Operating principles"
+    title="How I make the call"
+    lede="The judgement behind the work, stated plainly. These are the defaults I bring to an environment before I know anything else about it."
+  />
+
+  {
+    /* Text-forward and icon-free on purpose. Restraint reads as senior here; a grid of
+      tinted icon badges would read as a template. */
+  }
+  <ol class="border-line-subtle grid border-t sm:grid-cols-2">
+    {
+      principles.map((principle, i) => (
+        <li class="border-line-subtle border-b px-1 py-7 sm:odd:pr-10 sm:even:border-l sm:even:pl-10">
+          <div class="flex gap-4">
+            <span class="text-faint text-micro tabular mt-1 font-mono" aria-hidden="true">
+              {numeral(i + 1)}
+            </span>
+            <div>
+              <h3 class="text-hi text-title-3">{principle.data.title}</h3>
+              <p class="text-muted text-body-sm prose-measure mt-2">{principle.data.lede}</p>
+            </div>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>

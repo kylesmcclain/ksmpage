@@ -1,0 +1,91 @@
+---
+import { getCollection } from 'astro:content';
+import { SITE, url, yearsOfExperience } from '../../lib/site';
+
+const metrics = (await getCollection('metrics')).sort((a, b) => a.data.order - b.data.order);
+
+/**
+ * Build stamp. Real numbers in a machine's format are the highest-credibility-per-pixel
+ * element available to an operations portfolio — but only if they are genuinely real, so
+ * this is generated at build time rather than written into copy.
+ */
+const builtAt = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+const years = yearsOfExperience();
+---
+
+<section class="relative overflow-hidden">
+  {
+    /* Ambient glow. A plain radial gradient rather than a blurred element — `filter: blur()`
+      on a live layer repaints every frame and is the usual cause of scroll jank in this
+      style of hero. Declared in the stylesheet, not a style attribute, because CSP hashes
+      cover <style> elements but never style attributes. */
+  }
+  <div aria-hidden="true" class="hero-glow"></div>
+
+  <div class="max-w-page px-gutter relative mx-auto pt-20 pb-16 sm:pt-28">
+    {
+      /* No pulsing "live" beacon here. This is a static page — a beacon would imply
+        instrumentation that does not exist, and every fact on this site has to survive
+        someone checking it. */
+    }
+    <p class="eyebrow text-muted">
+      {SITE.shortRole} · {years} years · Healthcare, finance, public sector
+    </p>
+
+    <h1 class="text-hi text-display-1 mt-6 max-w-[19ch]">
+      Infrastructure that stays up when the stakes are <em class="font-serif italic">clinical</em>.
+    </h1>
+
+    <p class="text-muted prose-measure text-body-lg mt-6">
+      Systems and security engineer across healthcare, finance, and the public sector. I design the
+      networks, run the cloud, close the audit gaps, and manage the vendors who make it real.
+    </p>
+
+    <div class="mt-8 flex flex-wrap items-center gap-3">
+      <a
+        href={url('/#work')}
+        class="bg-accent text-on-accent text-body-sm inline-flex h-10 items-center rounded-md px-4 font-medium transition-[filter] duration-150 hover:brightness-110"
+      >
+        View case studies
+      </a>
+      <a
+        href={url('/#experience')}
+        class="border-line-control text-hi hover:bg-surface-2 text-body-sm inline-flex h-10 items-center rounded-md border px-4 font-medium transition-colors duration-150"
+      >
+        Experience
+      </a>
+    </div>
+
+    {/* Metric row. Tabular numerals so the figures align as a table, not as prose. */}
+    <dl
+      class="border-line-subtle mt-16 grid grid-cols-2 gap-x-6 gap-y-8 border-t pt-8 sm:grid-cols-3 lg:grid-cols-5"
+    >
+      {
+        metrics.map((metric) => (
+          <div>
+            <dt class="text-hi text-title-2 tabular">{metric.data.value}</dt>
+            <dd class="mt-1">
+              <span class="text-body text-body-sm block font-medium">{metric.data.label}</span>
+              <span class="text-faint text-caption mt-1 block">{metric.data.substantiation}</span>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <p class="text-faint border-line-subtle text-micro tabular mt-10 border-t pt-4 font-mono">
+      static build · {builtAt} · 0 third-party requests · CSP sha384
+    </p>
+  </div>
+</section>
+
+<style>
+  .hero-glow {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 42rem;
+    pointer-events: none;
+    background: radial-gradient(60rem 30rem at 50% -8rem, var(--accent-wash), transparent 70%);
+  }
+</style>

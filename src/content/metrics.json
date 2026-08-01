@@ -1,0 +1,37 @@
+[
+  {
+    "id": "uptime",
+    "order": 0,
+    "value": "99.9%",
+    "label": "Uptime sustained",
+    "substantiation": "Hybrid Google Workspace, Microsoft 365, and Google Cloud estate supporting clinical, corporate, and remote operations."
+  },
+  {
+    "id": "incident-reduction",
+    "order": 1,
+    "value": "40%",
+    "label": "Fewer security incidents",
+    "substantiation": "Fortinet and Cisco network infrastructure deployed alongside a recurring vulnerability-management and patching program."
+  },
+  {
+    "id": "support-reduction",
+    "order": 2,
+    "value": "30%",
+    "label": "Fewer support requests",
+    "substantiation": "PowerShell and Bash automation removed recurring manual work from the support queue."
+  },
+  {
+    "id": "client-portfolio",
+    "order": 3,
+    "value": "17",
+    "label": "Client environments",
+    "substantiation": "A multi-vertical managed-services portfolio across healthcare, finance, and the public sector, operated concurrently."
+  },
+  {
+    "id": "users-supported",
+    "order": 4,
+    "value": "150",
+    "label": "Users supported",
+    "substantiation": "Clinical, corporate, and fully remote teams on a single hybrid identity and endpoint estate."
+  }
+]

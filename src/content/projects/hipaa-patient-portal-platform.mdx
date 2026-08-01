@@ -1,0 +1,68 @@
+---
+title: 'Operating the Cloud Platform Behind a HIPAA Portal'
+summary: 'A patient and provider portal handling PHI needed someone to own its cloud platform — networking, pipeline, edge protection, identity boundaries, and day-two operations.'
+vertical: 'Healthcare'
+discipline: 'Cloud & DevOps'
+order: 4
+featured: false
+period: '2022–2025'
+situation: 'A HIPAA-compliant patient and provider portal needed an owner for its Google Cloud platform: the networking, the deployment pipeline, the security controls, and the day-two operations underneath a product engineering team that was busy shipping features.'
+constraint: 'PHI in scope meant IAM, WAF, and backup posture were compliance requirements rather than optimisations. The platform had to stay available to patients and providers continuously while the application team kept deploying — so the pipeline had to be safe enough to use often.'
+outcomes:
+  - label: 'Platform ownership'
+    value: 'End to end'
+    note: 'Networking, identity, edge, compute, and data tier under one owner.'
+  - label: 'Deployment path'
+    value: 'Repeatable'
+    note: 'GitLab CI/CD replaced hand-applied changes to production.'
+  - label: 'Dedicated platform hires'
+    value: '0'
+    note: 'Production-grade cloud operations delivered without a platform team.'
+businessImpact: 'A small engineering organisation got production-grade cloud operations and audit-ready controls without hiring a dedicated platform team. That is a direct headcount argument — and in a regulated healthcare context, the controls are not optional, so the alternative was not "do it later" but "do not ship."'
+stack:
+  - 'Google Cloud'
+  - 'Cloud Run'
+  - 'Compute Engine'
+  - 'Cloud Armor WAF'
+  - 'Cloud SQL'
+  - 'IAM'
+  - 'Load balancing & DNS'
+  - 'GitLab CI/CD'
+capabilities:
+  - 'Platform operations'
+  - 'CI/CD'
+  - 'Edge security'
+  - 'Production troubleshooting'
+---
+
+## Scope
+
+"Own the cloud platform" is a broad brief. In practice it decomposed into five things that each
+had to be true simultaneously.
+
+**A repeatable path to production.** CI/CD was built and maintained through GitLab so that
+application changes deployed the same way every time. Regulated environments punish snowflake
+deployments harder than most — if you cannot say how code reached production, you cannot evidence
+change control.
+
+**A defined network edge.** Cloud networking, DNS, and load balancing were configured with
+Cloud Armor WAF policies in front, so that the portal had an actual perimeter rather than an
+implicit one.
+
+**Least-privilege identity.** IAM policies were administered on least-privilege lines. In a PHI
+context the access model is the compliance story, and permissive defaults are the single most
+common finding.
+
+**A compute and data layer with a recovery story.** Workloads ran across Compute Engine VMs and
+Cloud Run containers, with SQL backup policies established for the data tier — a backup you have
+tested being the difference between an incident and a catastrophe.
+
+**Real production support.** API and database failure modes were troubleshot directly with the
+developers rather than bounced back as tickets. Infrastructure and application problems present
+identically at 2am; someone has to be willing to look at both.
+
+## Result
+
+A production healthcare platform with managed deployment, edge protection, controlled identity
+boundaries, and a genuine backup posture — operated as infrastructure rather than as a collection
+of consoles somebody occasionally logs into.

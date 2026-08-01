@@ -1,25 +1,59 @@
 {
-  "name": "systemos:-kyle-mcclain-portfolio",
+  "name": "ksmpage",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "description": "Infrastructure & systems engineering portfolio — Kyle McClain",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "typecheck": "astro check",
+    "lint": "eslint . --max-warnings=0",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{astro,ts,tsx,js,mjs,json,css,md,mdx,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{astro,ts,tsx,js,mjs,json,css,md,mdx,yml,yaml}\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:a11y": "playwright test tests/e2e/accessibility.spec.ts",
+    "sbom": "cyclonedx-npm --omit dev --output-format JSON --output-file dist/sbom.json",
+    "verify": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build",
+    "prepare": "lefthook install || true"
   },
   "dependencies": {
-    "react-dom": "^19.2.0",
-    "react": "^19.2.0",
-    "recharts": "^3.4.1",
-    "@google/genai": "^1.30.0",
-    "lucide-react": "^0.554.0",
-    "d3": "^7.9.0"
+    "@astrojs/mdx": "^7.0.5",
+    "@astrojs/sitemap": "^3.7.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.1.6",
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
-    "@types/node": "^22.14.0",
-    "@vitejs/plugin-react": "^5.0.0",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.12.1",
+    "@cyclonedx/cyclonedx-npm": "^6.0.0",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^22.19.2",
+    "@vitest/coverage-v8": "^4.1.10",
+    "astro-eslint-parser": "^3.0.0",
+    "eslint": "^10.8.0",
+    "eslint-plugin-astro": "^3.0.1",
+    "globals": "^17.8.0",
+    "lefthook": "^2.1.10",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "sharp": "^0.35.3",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.65.0",
+    "vitest": "^4.1.10"
   }
 }

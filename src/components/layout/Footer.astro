@@ -1,0 +1,51 @@
+---
+import { SITE, SOCIALS, url } from '../../lib/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-line-subtle relative z-10 mt-32 border-t">
+  <div
+    class="max-w-page px-gutter mx-auto flex flex-col gap-6 py-10 sm:flex-row sm:items-center sm:justify-between"
+  >
+    <div class="space-y-1">
+      <p class="text-hi font-medium">{SITE.name}</p>
+      <p class="text-muted text-caption">{SITE.role}</p>
+    </div>
+
+    <nav aria-label="Elsewhere">
+      <ul class="flex flex-wrap items-center gap-x-5 gap-y-2">
+        {
+          SOCIALS.map((social) => (
+            <li>
+              <a
+                href={social.href}
+                rel="me noopener noreferrer"
+                target="_blank"
+                class="text-muted hover:text-accent text-body-sm transition-colors duration-150"
+              >
+                {social.label}
+                <span class="text-faint text-micro font-mono">/{social.handle}</span>
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a
+            href={url('/colophon')}
+            class="text-muted hover:text-accent text-body-sm transition-colors duration-150"
+          >
+            Colophon
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="border-line-subtle border-t">
+    <p class="text-faint max-w-page px-gutter text-micro tabular mx-auto py-4 font-mono">
+      © {year}
+      {SITE.name} · Built with Astro · Static, zero third-party requests, hash-based CSP
+    </p>
+  </div>
+</footer>

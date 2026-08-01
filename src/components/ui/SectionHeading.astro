@@ -1,0 +1,30 @@
+---
+import { numeral } from '../../lib/format';
+
+interface Props {
+  /** Section index, rendered as a spec-style numeral. */
+  index: number;
+  eyebrow: string;
+  title: string;
+  lede?: string | undefined;
+  id?: string | undefined;
+}
+
+const { index, eyebrow, title, lede, id } = Astro.props;
+---
+
+{
+  /* Numbered heading with a rule filling the remaining width — the page reads as a document
+    rather than a landing page. */
+}
+<div class="mb-10">
+  <div class="flex items-center gap-3">
+    <span class="eyebrow text-muted tabular" aria-hidden="true">§{numeral(index)}</span>
+    <span class="eyebrow text-muted">{eyebrow}</span>
+    <span class="bg-line-subtle h-px flex-1" aria-hidden="true"></span>
+  </div>
+
+  <h2 id={id} class="text-hi text-title-1 mt-5">{title}</h2>
+
+  {lede && <p class="text-muted prose-measure text-body-lg mt-3">{lede}</p>}
+</div>

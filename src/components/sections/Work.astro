@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHeading from '../ui/SectionHeading.astro';
+import ProjectCard from '../ui/ProjectCard.astro';
+import { url } from '../../lib/site';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section id="work" class="max-w-page px-gutter mx-auto scroll-mt-20 py-24">
+  <SectionHeading
+    index={1}
+    eyebrow="Case studies"
+    title="Work that had to hold"
+    lede="Six engagements where the constraint was real — a fixed deadline, a regulated dataset, or a system that could not be allowed to stop. Client identities and environment details are omitted throughout."
+  />
+
+  <div class="grid gap-5 md:grid-cols-2">
+    {projects.map((project) => <ProjectCard project={project} />)}
+  </div>
+
+  <p class="text-faint text-caption mt-8">
+    Every engagement above is described by vertical and scale only. No client is named, and no
+    network topology, address, or facility detail appears anywhere on this site — a constraint
+    <a href={url('/colophon')} class="text-muted hover:text-accent underline underline-offset-4"
+      >enforced in CI</a
+    >, not just observed by hand.
+  </p>
+</section>

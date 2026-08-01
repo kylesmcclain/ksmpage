@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Tag from '../components/ui/Tag.astro';
+import { SOCIALS } from '../lib/site';
+
+/**
+ * The colophon is load-bearing, not decorative. A systems administrator claiming security
+ * and operational rigour should be judged on the artifact in front of the reader — so this
+ * page states exactly what the site does and how to verify each claim independently.
+ */
+const guarantees = [
+  {
+    claim: 'Zero third-party requests',
+    detail:
+      'No CDN, no analytics, no embedded fonts, no tag manager. Typefaces are resolved and downloaded at build time and served from this origin. A post-build script walks every emitted HTML file and fails CI if any subresource points off-origin.',
+    verify: 'DevTools → Network. Every request is same-origin.',
+  },
+  {
+    claim: 'Hash-based Content-Security-Policy',
+    detail:
+      "default-src 'none' with an explicit allowlist, and SHA-384 hashes for every inline script and style. There is no 'unsafe-inline' anywhere. The pre-paint theme script is hashed from the same module the layout inlines it from, so the hash cannot drift from the source.",
+    verify: 'View source → the content-security-policy meta tag.',
+  },
+  {
+    claim: 'No personal or client data',
+    detail:
+      'No email address, phone number, street address, IP range, subnet, SSID, or client name appears anywhere in site content. This is enforced by a test suite of pattern rules that runs on every commit and in CI — not by remembering to check.',
+    verify: 'tests/unit/content-safety.test.ts',
+  },
+  {
+    claim: 'Accessible by default',
+    detail:
+      'WCAG 2.2 AA contrast across both themes, verified by computation rather than by eye. Full keyboard operability, a visible focus ring designed to survive any background, and a reduced-motion path that disables grain and animation entirely.',
+    verify: 'Playwright + axe-core run against every route in CI.',
+  },
+] as const;
+
+const stack = [
+  ['Astro 7', 'Static output. Zero client JavaScript except the theme toggle.'],
+  ['TypeScript', 'Strictest preset, including noUncheckedIndexedAccess.'],
+  ['Tailwind CSS 4', 'CSS-first @theme tokens in OKLCH; no config file.'],
+  ['Zod', 'Every content file is schema-validated at build time.'],
+  ['Vitest', 'Unit tests for content safety and formatting logic.'],
+  ['Playwright + axe', 'End-to-end and accessibility assertions per route.'],
+  ['GitHub Actions', 'Lint, typecheck, test, build, SBOM, deploy.'],
+  ['CycloneDX', 'A software bill of materials is emitted with each build.'],
+] as const;
+---
+
+<BaseLayout
+  title="Colophon"
+  description="How this site is built: Astro 7, a hash-based Content-Security-Policy, zero third-party requests, and CI-enforced content safety."
+>
+  <div class="max-w-page px-gutter mx-auto py-16">
+    <header>
+      <p class="eyebrow text-muted">Colophon</p>
+      <h1 class="text-hi text-display-2 mt-4 max-w-[20ch]">The site is part of the portfolio.</h1>
+      <p class="text-muted prose-measure text-body-lg mt-5">
+        Anyone can write "security-focused" on a résumé. This page states what this artifact
+        actually does, and how to check each claim without taking my word for it.
+      </p>
+    </header>
+
+    <section class="mt-16" aria-labelledby="guarantees">
+      <h2 id="guarantees" class="eyebrow text-muted">Verifiable claims</h2>
+      <ul class="border-line-subtle mt-4 border-t">
+        {
+          guarantees.map((item) => (
+            <li class="border-line-subtle border-b py-6">
+              <div class="flex flex-col gap-3 lg:flex-row lg:gap-10">
+                <h3 class="text-hi text-title-3 lg:w-72 lg:flex-none">{item.claim}</h3>
+                <div class="min-w-0 flex-1">
+                  <p class="text-body prose-measure text-body-sm">{item.detail}</p>
+                  <p class="text-faint text-micro mt-2.5 font-mono">↳ {item.verify}</p>
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="mt-16" aria-labelledby="stack">
+      <h2 id="stack" class="eyebrow text-muted">Stack</h2>
+      <dl class="border-line-subtle mt-4 grid border-t sm:grid-cols-2">
+        {
+          stack.map(([name, detail]) => (
+            <div class="border-line-subtle border-b py-4 sm:odd:pr-8 sm:even:border-l sm:even:pl-8">
+              <dt class="text-hi text-body-sm font-mono">{name}</dt>
+              <dd class="text-muted text-caption mt-1">{detail}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="mt-16" aria-labelledby="tradeoffs">
+      <h2 id="tradeoffs" class="eyebrow text-muted">Known trade-offs</h2>
+      <div class="border-line-subtle bg-surface-1 mt-4 rounded-lg border p-6 sm:p-7">
+        <p class="text-body prose-measure text-body-sm">
+          GitHub Pages cannot serve custom response headers. That means
+          <code class="text-accent-soft font-mono">Strict-Transport-Security</code>,
+          <code class="text-accent-soft font-mono">frame-ancestors</code>, and
+          <code class="text-accent-soft font-mono">Permissions-Policy</code> cannot be delivered here
+          — a
+          <code class="text-accent-soft font-mono">&lt;meta&gt;</code> CSP covers script and style but
+          browsers ignore those three directives in meta form. A
+          <code class="text-accent-soft font-mono">public/_headers</code> file ships with the build so
+          the full header set applies immediately if the site is moved to a host that supports it. Stating
+          the gap is more useful than pretending it does not exist.
+        </p>
+      </div>
+    </section>
+
+    <section class="mt-16" aria-labelledby="source">
+      <h2 id="source" class="eyebrow text-muted">Source</h2>
+      <p class="text-muted prose-measure text-body-sm mt-4">
+        The repository is public. The CI workflow, the content-safety rules, the CSP configuration,
+        and the infrastructure samples are all readable.
+      </p>
+      <div class="mt-5 flex flex-wrap gap-2">
+        {
+          SOCIALS.map((social) => (
+            <Tag variant="accent">
+              {social.label} /{social.handle}
+            </Tag>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>

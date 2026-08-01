@@ -1,0 +1,69 @@
+---
+title: 'Relocating a Working Laboratory Over One Weekend'
+summary: 'Laboratory and R&D infrastructure moved to a building with no network, inside a single weekend, with instruments running Monday morning. No rollback window existed.'
+vertical: 'Clinical Diagnostics'
+discipline: 'Infrastructure'
+order: 1
+featured: true
+period: '2022–2025'
+situation: 'A clinical and R&D organisation was moving its laboratory and research infrastructure into a new facility. Instruments, servers, and every network dependency had to land in a building whose network did not yet exist.'
+constraint: 'The move had to complete inside one weekend. Laboratory operations resumed Monday morning regardless of readiness, so there was no partial-cutover option and no rollback window. Structured cabling, ISP provisioning, and physical equipment handling all sat on the critical path — and external parties owned most of it.'
+outcomes:
+  - label: 'Operational downtime'
+    value: '0'
+    note: 'Laboratory and R&D operations resumed on schedule Monday morning.'
+  - label: 'Post-move remediation'
+    value: 'None'
+    note: 'No emergency follow-up work was required after the site was released.'
+  - label: 'Critical-path vendors'
+    value: '3+'
+    note: 'Cabling, ISP, and equipment logistics sequenced against a fixed deadline.'
+businessImpact: 'A failed laboratory move stops revenue-generating testing and puts sample throughput commitments at risk — and the cost compounds daily while instruments sit uncalibrated in a room with no uplink. This one cost zero operating hours. From the perspective of the scientists, the relocation simply did not happen.'
+stack:
+  - 'Fortinet'
+  - 'Network topology design'
+  - 'Structured cabling'
+  - 'ISP circuit provisioning'
+  - 'Physical migration'
+  - 'Cutover planning'
+capabilities:
+  - 'Site network design'
+  - 'Vendor sequencing'
+  - 'Change control'
+  - 'Physical infrastructure'
+---
+
+## The shape of the risk
+
+Everything that could delay this project was owned by somebody else. Circuit activation dates
+come from a carrier. Termination work comes from a cabling crew. Equipment arrives when the movers
+say it arrives. The one thing fully under my control was whether the design was finished and
+correct before any of those dependencies landed — so that was where the effort went.
+
+## Approach
+
+**Design the network before the building is ready.** The site's topology was designed around
+Fortinet firewalling and switching well ahead of the move, with every required network drop mapped
+against the intended floor layout and the physical placement of each instrument. Nothing was
+improvised on site.
+
+**Sequence the vendors, do not queue behind them.** Structured cabling and ISP work were ordered
+and scheduled so that circuit activation and physical termination both completed _before_ equipment
+arrived. The most common way a move like this fails is discovering on Saturday that the carrier's
+date was Monday.
+
+**Own the physical move.** Relocation and rack-up of infrastructure were handled directly rather
+than delegated, which kept the person who designed the topology in the room while it was being
+assembled.
+
+**Validate service by service.** Connectivity and instrument reachability were confirmed
+individually before the site was released — not with a single ping test, but against the actual
+list of what the lab needed to be able to reach on Monday.
+
+## Result
+
+Laboratory and R&D operations resumed Monday with zero downtime and no emergency remediation.
+
+The relocation is the clearest example I have of a principle I hold generally: a cutover with no
+rollback window is survivable only if the failure path was planned while there was still time to
+plan it.
