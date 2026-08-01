@@ -48,10 +48,16 @@ file ships with the build so the full header set applies the moment the site mov
 that reads it (Cloudflare Pages, Netlify). This gap is documented on the site's own colophon
 rather than quietly omitted.
 
-**GitHub Actions are pinned to major version tags, not commit SHAs.** SHA pinning is the
-stronger posture and is the intended end state. Tags are used currently because the SHAs
-could not be resolved in the environment where this was authored; `pin-github-action` or
-`ratchet` will convert them in a single pass.
+**Three GitHub Actions remain on version tags.** A mutable tag can be repointed at arbitrary
+code by whoever controls the action's repository, so every action here is pinned to an
+immutable commit SHA instead — and each SHA was taken from this repository's own runner
+logs (`Download action repository '<action>' (SHA:...)`), meaning GitHub resolved it, not a
+human guessing.
+
+The exceptions are `actions/configure-pages`, `actions/upload-pages-artifact`, and
+`actions/deploy-pages` in `deploy.yml`. That workflow has never run — GitHub Pages is not
+enabled yet — so no digest has been observed for them. They will be pinned from the first
+deploy run's logs. A guessed SHA would be worse than an honest tag.
 
 ## Dependency posture
 

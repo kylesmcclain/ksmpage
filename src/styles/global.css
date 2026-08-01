@@ -259,16 +259,6 @@
     'zero' 1;
 }
 
-/* Overlay hairline: no layout cost, and it survives `overflow: hidden`. */
-@utility hairline-inset {
-  box-shadow: inset 0 0 0 1px var(--border-subtle);
-}
-
-/* "There is more of this" without a hard crop. */
-@utility mask-fade-b {
-  mask-image: linear-gradient(to bottom, #000 0%, #000 60%, transparent 100%);
-}
-
 @utility prose-measure {
   max-width: 68ch;
 }
