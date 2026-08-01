@@ -1,0 +1,37 @@
+---
+import { SOCIALS } from '../../lib/site';
+import SectionHeading from '../ui/SectionHeading.astro';
+---
+
+<section id="contact" class="max-w-page px-gutter mx-auto scroll-mt-20 py-24">
+  <SectionHeading index={5} eyebrow="Contact" title="Getting in touch" />
+
+  <div class="border-line-subtle bg-surface-1 rounded-lg border p-8 sm:p-10">
+    <p class="text-body prose-measure text-body-lg">
+      I am interested in senior infrastructure, platform, and security operations roles —
+      particularly in regulated environments where uptime and auditability both matter.
+    </p>
+
+    <div class="mt-7 flex flex-wrap gap-3">
+      {
+        SOCIALS.map((social) => (
+          <a
+            href={social.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="border-line-control text-hi hover:bg-surface-3 text-body-sm inline-flex h-10 items-center gap-2 rounded-md border px-4 font-medium transition-colors duration-150"
+          >
+            {social.label}
+            <span class="text-faint text-micro font-mono">/{social.handle}</span>
+          </a>
+        ))
+      }
+    </div>
+
+    <p class="text-faint text-caption prose-measure mt-7">
+      No email address or phone number is published here by design. A public page is a scraping
+      surface, and neither is needed to evaluate the work — a build-time check fails CI if either
+      ever appears in site content.
+    </p>
+  </div>
+</section>

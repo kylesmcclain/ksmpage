@@ -1,0 +1,24 @@
+# Local guard rails. CI re-runs everything — these hooks just shorten the feedback loop.
+pre-commit:
+  parallel: true
+  jobs:
+    - name: format
+      glob: '*.{astro,ts,tsx,js,mjs,json,css,md,mdx,yml,yaml}'
+      run: npx prettier --write {staged_files}
+      stage_fixed: true
+
+    - name: lint
+      glob: '*.{astro,ts,tsx,js,mjs}'
+      run: npx eslint --max-warnings=0 {staged_files}
+
+    - name: content-safety
+      glob: 'src/content/**/*'
+      run: npx vitest run tests/unit/content-safety.test.ts
+
+pre-push:
+  jobs:
+    - name: typecheck
+      run: npm run typecheck
+
+    - name: unit-tests
+      run: npm run test

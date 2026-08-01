@@ -1,0 +1,198 @@
+/*
+ * Design tokens.
+ * ---------------------------------------------------------------------------
+ * Derived from a survey of what technical-product marketing sites actually ship in 2026
+ * (Linear, Vercel, Warp, Resend, Sentry, Railway, Fly.io). Three rules drive everything:
+ *
+ *   1. Elevation is lightness, not shadow. In dark mode a drop shadow is invisible; surfaces
+ *      separate by an L* step plus a 1px alpha hairline. Shadows only return in light mode.
+ *   2. Monospace is a structural voice. Sans carries prose; mono carries every *fact* —
+ *      counts, durations, versions, section numerals. That is what makes an operations
+ *      portfolio read as instrument-grade rather than as marketing.
+ *   3. One accent, rationed. Accent marks interactive affordance and nothing else. Status
+ *      colours are a separate semantic vocabulary that never decorates.
+ *
+ * Neutrals are anchored to a single hue with very low chroma. Perfectly neutral greys
+ * (chroma 0) are the tell of an untuned palette; real systems tint them.
+ *
+ * Every foreground/background pair below was contrast-checked by computing OKLCH → sRGB →
+ * relative luminance, not by eye. Two results drove the final values:
+ *
+ *   - `--accent` and `--success` were originally both at L=0.72, which is 1.01:1 against each
+ *     other and 1.02:1 under deuteranopia simulation. Roughly 8% of male viewers could not
+ *     have told the "interactive" colour from the "healthy" one. `--success` moved to L=0.82.
+ *   - The light palette was tuned against #ffffff only and failed on its own cards: `--warn`
+ *     measured 4.31:1 on `--surface-2`, the surface it is most often used on. All four
+ *     semantic tokens dropped to L=0.45, which clears 4.5:1 on every surface level.
+ *
+ * `--accent` is a TEXT and BORDER token. White on it is 2.36:1 — it must never be a
+ * background for white text. Use `--on-accent` for anything filled with it.
+ */
+
+:root {
+  /* Hue anchors. Changing --h-accent rebrands the entire site. */
+  --h-neutral: 255;
+  --h-accent: 195; /* signal teal */
+  --h-success: 152;
+  --h-warn: 80;
+  --h-danger: 25;
+
+  --hairline: 1px;
+}
+
+@media (min-resolution: 2dppx) {
+  :root {
+    --hairline: 0.5px;
+  }
+}
+
+/* ---------------------------------------------------------------- dark (default) */
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* Surfaces — L* steps of ~0.035 */
+  --surface-0: oklch(0.145 0.008 var(--h-neutral)); /* page */
+  --surface-1: oklch(0.178 0.009 var(--h-neutral)); /* card */
+  --surface-2: oklch(0.212 0.01 var(--h-neutral)); /* popover */
+  --surface-3: oklch(0.248 0.011 var(--h-neutral)); /* hover */
+  --surface-4: oklch(0.292 0.012 var(--h-neutral)); /* active */
+  --surface-sunken: oklch(0.118 0.007 var(--h-neutral)); /* wells, code */
+
+  /* Text — 17.9 / 12.7 / 7.4 / 4.3 : 1 against --surface-0 */
+  --text-hi: oklch(0.965 0.004 var(--h-neutral));
+  --text: oklch(0.855 0.012 var(--h-neutral));
+  --text-muted: oklch(0.7 0.018 var(--h-neutral));
+  --text-faint: oklch(0.615 0.018 var(--h-neutral));
+  --text-disabled: oklch(0.44 0.015 var(--h-neutral));
+
+  /* Borders. 7/11/18% are decorative dividers, which WCAG 1.4.11 exempts. Anything that
+     bounds a control or a focusable region needs --border-control (3.5:1). */
+  --border-subtle: color-mix(in oklab, var(--text-hi) 7%, transparent);
+  --border: color-mix(in oklab, var(--text-hi) 11%, transparent);
+  --border-strong: color-mix(in oklab, var(--text-hi) 18%, transparent);
+  --border-control: color-mix(in oklab, var(--text-hi) 40%, transparent);
+
+  /* Accent — 8.38:1 on --surface-0 */
+  --accent-dim: oklch(0.36 0.055 var(--h-accent));
+  --accent-low: oklch(0.62 0.085 var(--h-accent));
+  --accent: oklch(0.72 0.115 var(--h-accent));
+  --accent-hi: oklch(0.8 0.105 var(--h-accent));
+  --accent-soft: oklch(0.88 0.07 var(--h-accent));
+  --accent-wash: color-mix(in oklab, var(--accent) 10%, transparent);
+  /* Foreground for anything filled with --accent. Dark-on-bright is 8.38:1 here; white
+     would be 2.36:1. */
+  --on-accent: oklch(0.145 0.008 var(--h-neutral));
+
+  /* Semantic — 8.50 / 10.09 / 5.36 : 1 */
+  --success: oklch(0.82 0.155 var(--h-success));
+  --warn: oklch(0.79 0.145 var(--h-warn));
+  --danger: oklch(0.64 0.195 var(--h-danger));
+  --success-wash: color-mix(in oklab, var(--success) 12%, transparent);
+  --warn-wash: color-mix(in oklab, var(--warn) 12%, transparent);
+  --danger-wash: color-mix(in oklab, var(--danger) 12%, transparent);
+
+  --shadow-color: 0deg 0% 0%;
+  --shadow-sm: 0 1px 2px hsl(var(--shadow-color) / 0.5);
+  --shadow-md: 0 4px 16px -4px hsl(var(--shadow-color) / 0.45);
+  --shadow-lg: 0 12px 40px -8px hsl(var(--shadow-color) / 0.55);
+
+  --grain-opacity: 0.28;
+}
+
+/* ---------------------------------------------------------------- light */
+/* Not an inversion. Chroma rises as lightness falls, so light-mode accents are darker and
+   more saturated to hold contrast against white. */
+[data-theme='light'] {
+  color-scheme: light;
+
+  --surface-0: oklch(1 0 0);
+  --surface-1: oklch(0.985 0.002 var(--h-neutral));
+  --surface-2: oklch(0.968 0.004 var(--h-neutral));
+  --surface-3: oklch(0.945 0.006 var(--h-neutral));
+  --surface-4: oklch(0.915 0.008 var(--h-neutral));
+  --surface-sunken: oklch(0.975 0.003 var(--h-neutral));
+
+  --text-hi: oklch(0.205 0.015 var(--h-neutral)); /* 17.9:1 */
+  --text: oklch(0.335 0.018 var(--h-neutral)); /* 12.0:1 */
+  --text-muted: oklch(0.48 0.02 var(--h-neutral)); /*  6.5:1 */
+  --text-faint: oklch(0.545 0.018 var(--h-neutral)); /*  5.0:1 */
+  --text-disabled: oklch(0.7 0.015 var(--h-neutral));
+
+  --border-subtle: oklch(0.905 0.008 var(--h-neutral));
+  --border: oklch(0.855 0.01 var(--h-neutral));
+  --border-strong: oklch(0.79 0.012 var(--h-neutral));
+  --border-control: oklch(0.62 0.015 var(--h-neutral));
+
+  --accent-dim: oklch(0.94 0.03 var(--h-accent));
+  --accent-low: oklch(0.76 0.09 var(--h-accent));
+  --accent: oklch(0.45 0.09 var(--h-accent)); /* 5.42:1 even on --surface-4 */
+  --accent-hi: oklch(0.36 0.08 var(--h-accent)); /* hover — darker, not a near-duplicate */
+  --accent-soft: oklch(0.3 0.07 var(--h-accent));
+  --on-accent: oklch(1 0 0); /* white on the darker light-mode accent: 8.9:1 */
+
+  --success: oklch(0.45 0.135 var(--h-success));
+  --warn: oklch(0.45 0.115 var(--h-warn));
+  --danger: oklch(0.45 0.195 var(--h-danger));
+
+  --shadow-color: 255deg 12% 42%;
+  --shadow-sm: 0 1px 2px hsl(var(--shadow-color) / 0.06);
+  --shadow-md:
+    0 2px 4px hsl(var(--shadow-color) / 0.05), 0 8px 16px -6px hsl(var(--shadow-color) / 0.08);
+  --shadow-lg:
+    0 4px 8px hsl(var(--shadow-color) / 0.04), 0 24px 48px -12px hsl(var(--shadow-color) / 0.12);
+
+  --grain-opacity: 0.1;
+}
+
+/*
+ * Print.
+ *
+ * Recruiters print and PDF portfolio pages. A near-black page prints as a black rectangle or
+ * gets badly auto-inverted, so print forces the light token set and drops the chrome.
+ */
+@media print {
+  :root,
+  [data-theme='dark'],
+  [data-theme='light'] {
+    color-scheme: light;
+    --surface-0: #fff;
+    --surface-1: #fff;
+    --surface-2: #fff;
+    --surface-3: #fff;
+    --surface-4: #fff;
+    --surface-sunken: #fff;
+    --text-hi: #000;
+    --text: #1a1a1a;
+    --text-muted: #3a3a3a;
+    --text-faint: #4a4a4a;
+    --border-subtle: #c8c8c8;
+    --border: #b0b0b0;
+    --border-strong: #909090;
+    --border-control: #707070;
+    --accent: #005f60;
+    --accent-soft: #004a4b;
+    --on-accent: #fff;
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+    --grain-opacity: 0;
+  }
+
+  .grain,
+  header,
+  footer {
+    display: none !important;
+  }
+
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.75em;
+    word-break: break-all;
+  }
+
+  section,
+  article {
+    break-inside: avoid-page;
+  }
+}

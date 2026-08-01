@@ -1,0 +1,86 @@
+[
+  {
+    "id": "clinical-diagnostics",
+    "order": 0,
+    "role": "Systems Administrator",
+    "org": "Renegade.bio",
+    "start": "2022-02",
+    "end": "2025-10",
+    "scope": "Sole infrastructure owner for a clinical diagnostics lab: 150 users across clinical, corporate, and fully remote teams.",
+    "highlights": [
+      "Operated a hybrid Google Workspace, Microsoft 365, and Google Cloud environment at 99.9% uptime for 150 users across clinical, corporate, and fully remote teams.",
+      "Deployed Fortinet and Cisco network infrastructure and paired it with a recurring vulnerability-management program, reducing security incidents by 40%.",
+      "Automated recurring administrative and support workflows in PowerShell and Bash, cutting support requests by 30% and reclaiming that capacity for project work.",
+      "Led migration of a legacy Laboratory Information System to Google Cloud while preserving live integrations with on-premises PCR instrumentation and external healthcare portals.",
+      "Owned HIPAA compliance validation across the environment, covering access control, backup policy, and clinical data handling.",
+      "Managed the Hyper-V virtualization estate and the endpoint security stack across Windows, macOS, and Linux."
+    ],
+    "stack": [
+      "Google Cloud",
+      "Google Workspace",
+      "Microsoft 365",
+      "Fortinet",
+      "Cisco",
+      "Hyper-V",
+      "SentinelOne",
+      "PowerShell",
+      "Bash",
+      "Python"
+    ],
+    "projects": [
+      "lis-cloud-migration",
+      "zero-downtime-lab-relocation",
+      "vulnerability-management-program",
+      "hipaa-patient-portal-platform"
+    ]
+  },
+  {
+    "id": "msp-consulting",
+    "order": 1,
+    "role": "IT Consultant",
+    "org": "Techordia LLC",
+    "start": "2017-10",
+    "end": "2022-02",
+    "scope": "Infrastructure lead across a 17-client managed services portfolio spanning healthcare, finance, and the public sector.",
+    "highlights": [
+      "Managed IT infrastructure for a 17-client portfolio spanning healthcare, finance, and public-sector organizations, each with distinct compliance and budget constraints.",
+      "Integrated Okta with Microsoft 365 to deliver single sign-on and MFA, consolidating fragmented client credential estates into one governed access layer.",
+      "Led on-premises to Azure and Office 365 migrations across the client book, scoping and sequencing each engagement independently.",
+      "Deployed and administered SonicWall and Meraki firewall estates and VMware virtualization environments across multiple client sites.",
+      "Ran service delivery through ConnectWise, maintaining per-client visibility into work, effort, and infrastructure state."
+    ],
+    "stack": [
+      "Okta",
+      "Microsoft 365",
+      "Azure",
+      "SonicWall",
+      "Meraki",
+      "VMware",
+      "ConnectWise",
+      "Active Directory"
+    ],
+    "projects": ["identity-and-perimeter-consolidation", "satellite-office-buildout"]
+  },
+  {
+    "id": "public-sector-education",
+    "order": 2,
+    "role": "Computer Technician II",
+    "org": "Dublin Unified School District",
+    "start": "2013-06",
+    "end": "2017-09",
+    "scope": "Network, server, and endpoint infrastructure across multiple school sites in a public-sector environment.",
+    "highlights": [
+      "Maintained network, server, and endpoint infrastructure across multiple school sites in a Windows Server and Active Directory environment.",
+      "Resolved classroom-critical faults across desktops, printers, and Chromebook fleets against time constraints set by instructional schedules.",
+      "Ran IT asset management and in-house hardware repair, extending device service life and reducing replacement spend."
+    ],
+    "stack": [
+      "Windows Server",
+      "Active Directory",
+      "Chrome Enterprise",
+      "Endpoint Support",
+      "Asset Management"
+    ],
+    "projects": []
+  }
+]

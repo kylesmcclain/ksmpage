@@ -1,0 +1,68 @@
+---
+title: 'Identity and Perimeter Across a 17-Client Portfolio'
+summary: 'Five years running infrastructure for seventeen organisations at once, across healthcare, finance, and the public sector — each with its own compliance posture, budget, and legacy estate.'
+vertical: 'Managed Services'
+discipline: 'Security'
+order: 2
+featured: true
+period: '2017–2022'
+situation: 'As an IT consultant at Techordia, I held responsibility for the infrastructure of seventeen client organisations spanning healthcare, financial services, and the public sector. Each arrived with a different regulatory posture, a different tolerance for spend, and a different pile of legacy decisions.'
+constraint: "Seventeen environments, one engineer's attention. Nothing scaled unless it was standardised — but no two clients could absorb the same amount of change at the same speed, and regulated clients constrained where data could live and who could reach it. Standardisation and per-client judgement had to coexist."
+outcomes:
+  - label: 'Client environments'
+    value: '17'
+    note: 'Operated concurrently across three regulated verticals.'
+  - label: 'Identity model'
+    value: 'Unified'
+    note: 'Okta integrated with Microsoft 365 for SSO and MFA across the book.'
+  - label: 'Migration programme'
+    value: 'Per-client'
+    note: 'On-premises to Azure and Office 365, scoped and sequenced individually.'
+businessImpact: 'This is the part of the record that is about business judgement rather than technology. Seventeen simultaneous stakeholders means constantly trading cost against risk against sequencing, per account, with a different answer each time. Credential sprawl across a client book is both a security exposure and an operational tax; collapsing it into one governed access layer reduced both at once.'
+stack:
+  - 'Okta'
+  - 'Microsoft 365'
+  - 'Azure'
+  - 'SonicWall'
+  - 'Meraki'
+  - 'VMware'
+  - 'ConnectWise'
+  - 'Active Directory'
+capabilities:
+  - 'Identity & access management'
+  - 'Multi-tenant operations'
+  - 'Cloud migration'
+  - 'Service delivery'
+---
+
+## Why this one matters most
+
+The single-environment work on this site demonstrates depth. This one demonstrates the thing that
+is harder to teach: carrying many stakeholders concurrently and making a defensible call about
+what each of them should spend, change, and defer.
+
+## Approach
+
+**Standardise identity first.** Fragmented credentials were the common failure across the book —
+every client had accumulated a different set of local accounts, shared logins, and half-migrated
+directories. Integrating Okta with Microsoft 365 to deliver single sign-on and MFA collapsed that
+sprawl into one controllable access layer, which is the highest-leverage security control
+available in a small organisation.
+
+**Treat the perimeter as an estate, not a device.** SonicWall and Meraki firewall deployments and
+VMware virtualization environments were managed as a portfolio, so that a lesson learned at one
+client became the default at the next.
+
+**Sequence migrations per client, not per calendar.** On-premises to Azure and Office 365 moves
+were scoped independently. A regulated client with a data-residency constraint and a twenty-person
+firm with a hardware refresh due are not the same project, and pretending otherwise is how MSP
+engagements go badly.
+
+**Make the work visible.** Delivery ran through ConnectWise so that effort, state, and history
+were attributable per client — which matters for billing, but matters more for being able to
+answer "what changed?" six months later.
+
+## Result
+
+A multi-vertical client book operated concurrently, with modernised identity, perimeter, and cloud
+footprints delivered client by client rather than as a single forced march.

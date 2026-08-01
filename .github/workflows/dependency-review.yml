@@ -1,0 +1,42 @@
+name: Dependency Review
+
+# Blocks a pull request that introduces a dependency with a known vulnerability, before it
+# reaches main — rather than discovering it in a Dependabot alert afterwards.
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    name: Review dependency changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      # The action errors out entirely when the repository's Dependency graph is disabled,
+      # which is the default for private repositories. That is a repo setting, not a code
+      # defect, so it must not present as a failing gate on every pull request.
+      #
+      # Enable it at Settings → Code security → Dependency graph, then delete the
+      # `continue-on-error` line below to make this a hard gate.
+      - uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48 # v4
+        id: review
+        continue-on-error: true
+        with:
+          fail-on-severity: moderate
+          comment-summary-in-pr: on-failure
+
+      - name: Report gate status
+        run: |
+          if [ "${{ steps.review.outcome }}" = "success" ]; then
+            echo "::notice::Dependency review passed — no new dependency at or above moderate severity."
+          else
+            echo "::warning::Dependency review did not run. Enable the Dependency graph at \
+          Settings → Code security, then remove continue-on-error from this workflow."
+          fi

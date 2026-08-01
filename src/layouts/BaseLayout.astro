@@ -1,0 +1,121 @@
+---
+import { Font } from 'astro:assets';
+import { ClientRouter } from 'astro:transitions';
+import { THEME_INIT_SOURCE } from '../lib/theme-init.mjs';
+import { SITE, SOCIALS, url } from '../lib/site';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import Grain from '../components/ui/Grain.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string | undefined;
+  description?: string | undefined;
+  /** Set on the home page so JSON-LD emits the ProfilePage wrapper. */
+  isProfilePage?: boolean | undefined;
+}
+
+const { title, description, isProfilePage = false } = Astro.props;
+
+const pageTitle = title ? `${title} — ${SITE.name}` : SITE.title;
+const pageDescription = description ?? SITE.description;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+/**
+ * `sameAs` only ever contains profiles that actually exist — an unverified placeholder URL
+ * in structured data is worse than omitting the property.
+ */
+const person = {
+  '@type': 'Person',
+  name: SITE.name,
+  jobTitle: SITE.role,
+  description: SITE.description,
+  url: canonical,
+  knowsAbout: [
+    'Google Cloud Platform',
+    'Network architecture and VLAN segmentation',
+    'Fortinet firewall deployment',
+    'Identity and access management',
+    'Vulnerability management',
+    'Endpoint detection and response',
+    'HIPAA compliance',
+    'Cloud migration',
+    'Windows Server and Active Directory',
+    'PowerShell and Bash automation',
+    'Vendor management',
+  ],
+  hasOccupation: {
+    '@type': 'Occupation',
+    name: 'Systems Administrator',
+    occupationalCategory: '15-1244.00',
+  },
+  ...(SOCIALS.length > 0 ? { sameAs: SOCIALS.map((s) => s.href) } : {}),
+};
+
+const jsonLd = isProfilePage
+  ? { '@context': 'https://schema.org', '@type': 'ProfilePage', mainEntity: person }
+  : { '@context': 'https://schema.org', ...person };
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    {/* Must run before first paint, and is CSP-hashed at config time. */}
+    <script is:inline set:html={THEME_INIT_SOURCE} />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="theme-color" content="#080a0d" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+
+    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+    <link rel="sitemap" href={url('/sitemap-index.xml')} />
+
+    <Font cssVariable="--font-inter" preload />
+    <Font cssVariable="--font-geist-mono" preload />
+    <Font cssVariable="--font-newsreader" />
+
+    <ClientRouter />
+
+    {
+      /*
+      A `application/ld+json` block is data, not script: the browser never "prepares" it for
+      execution, so CSP's script-src does not gate it and it needs no hash. `is:inline` keeps
+      Astro from trying to bundle it as a module.
+    */
+    }
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+  </head>
+
+  <body class="bg-surface-0 text-body min-h-dvh antialiased">
+    <Grain />
+
+    <a
+      href="#main"
+      class="focus-visible:bg-surface-2 focus-visible:text-hi focus-visible:ring-accent sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:top-3 focus-visible:left-3 focus-visible:z-50 focus-visible:rounded-md focus-visible:px-4 focus-visible:py-2"
+    >
+      Skip to content
+    </a>
+
+    <Header />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,64 @@
+---
+title: 'Segmenting Physical Security Off the Production Network'
+summary: 'A facility upgraded its physical security and the network carrying it, while operating. Camera and access endpoints landed on isolated VLANs rather than beside the systems that matter.'
+vertical: 'Healthcare'
+discipline: 'Networking'
+order: 5
+featured: false
+period: '2022–2025'
+situation: 'A facility needed its physical security systems and the network underneath them upgraded together — camera and access-control infrastructure, plus the switching and segmentation required to carry it safely.'
+constraint: 'The facility kept operating throughout. Multiple vendors were involved with interlocking dependencies, and PoE switch availability was a hard gate: without the right switch capacity on site at the right time, the camera and access endpoints had nowhere to land and the installers would have arrived to a blocked job.'
+outcomes:
+  - label: 'Operational downtime'
+    value: '0'
+    note: 'The upgrade completed without an emergency change window.'
+  - label: 'Security traffic'
+    value: 'Isolated'
+    note: 'Camera and access endpoints segmented away from production and user networks.'
+  - label: 'Vendor dependencies'
+    value: 'Sequenced'
+    note: 'Physical install and network readiness kept in step rather than blocking.'
+businessImpact: 'Physical security devices are the textbook example of equipment that is bought on a facilities budget, installed by an integrator, and then quietly attached to the corporate network forever. Segmenting them reduced the blast radius of an entire class of device risk at effectively zero marginal cost — the switch capacity was being purchased anyway. The business got a better security posture as a side effect of a project it had already approved.'
+stack:
+  - 'VLAN segmentation'
+  - 'PoE switching'
+  - 'Network access design'
+  - 'IP camera & access control'
+  - 'Multi-vendor coordination'
+  - 'Procurement scheduling'
+capabilities:
+  - 'Network segmentation'
+  - 'Vendor management'
+  - 'Procurement'
+  - 'Change control'
+---
+
+## The design decision that mattered
+
+The upgrade itself was a facilities project. The security outcome came from one architectural
+choice made early: the camera and access-control endpoints would not share a broadcast domain with
+the people who read email.
+
+IP cameras and door controllers are long-lived, rarely patched, and frequently shipped with
+credentials that nobody rotates. Treating them as untrusted from the start is cheap. Retrofitting
+that assumption after they are installed and working is not — it means touching a system the
+facilities team now depends on.
+
+## Approach
+
+**Sequence the vendors against a hard gate.** PoE switch procurement and availability were managed
+directly against the installation schedule, so that network capacity was on site before the
+integrator needed it. This is the unglamorous half of infrastructure work and the half that
+determines whether a project lands on time.
+
+**Segment by default.** VLANs were designed and configured to isolate security and camera traffic
+from production and user networks, so that a compromised or simply misbehaving camera endpoint had
+no path to the systems that carry real data.
+
+**Stage against live operations.** Changes were staged and validated while the facility continued
+to run, rather than depending on an outage window that a working facility could not give.
+
+## Result
+
+The upgrade completed with zero operational downtime, improved physical security coverage, and an
+entire category of IoT-class device permanently contained behind a segmentation boundary.

@@ -1,0 +1,57 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { url } from '../../lib/site';
+import Tag from './Tag.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const headline = data.outcomes[0];
+---
+
+<article
+  class="group border-line-subtle bg-surface-1 hover:border-line relative flex flex-col rounded-lg border p-6 transition-colors duration-150"
+>
+  <div class="flex items-center gap-2">
+    <Tag variant="accent">{data.discipline}</Tag>
+    <Tag>{data.vertical}</Tag>
+    <span class="text-faint text-micro tabular ml-auto font-mono">{data.period}</span>
+  </div>
+
+  <h3 class="text-hi text-title-3 mt-4">
+    <a href={url(`/work/${project.id}`)} class="after:absolute after:inset-0">
+      {data.title}
+    </a>
+  </h3>
+
+  <p class="text-muted text-body-sm mt-2.5 mb-5">{data.summary}</p>
+
+  {
+    headline && (
+      <div class="border-line-subtle mt-auto flex items-baseline gap-2.5 border-t pt-4">
+        <span class="text-accent text-title-3 tabular">{headline.value}</span>
+        <span class="text-muted text-caption">{headline.label}</span>
+      </div>
+    )
+  }
+
+  <ul class="mt-4 flex flex-wrap gap-1.5" aria-label="Technologies">
+    {
+      data.stack.slice(0, 4).map((tech) => (
+        <li>
+          <Tag>{tech}</Tag>
+        </li>
+      ))
+    }
+    {
+      data.stack.length > 4 && (
+        <li>
+          <span class="text-faint text-micro font-mono">+{data.stack.length - 4}</span>
+        </li>
+      )
+    }
+  </ul>
+</article>

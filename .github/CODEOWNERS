@@ -1,0 +1,13 @@
+# Default owner for everything.
+*                        @kylesmcclain
+
+# Paths where a careless change has consequences beyond the diff.
+/.github/workflows/      @kylesmcclain
+/.github/dependabot.yml  @kylesmcclain
+/astro.config.mjs        @kylesmcclain
+/public/_headers         @kylesmcclain
+/scripts/                @kylesmcclain
+/src/content/            @kylesmcclain
+/src/styles/tokens.css   @kylesmcclain
+/tests/unit/content-safety.test.ts @kylesmcclain
+/SECURITY.md             @kylesmcclain

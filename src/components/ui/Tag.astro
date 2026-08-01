@@ -1,0 +1,20 @@
+---
+interface Props {
+  /** `mono` for technology names and facts; `plain` for prose-like labels. */
+  variant?: 'mono' | 'plain' | 'accent' | undefined;
+  class?: string | undefined;
+}
+
+const { variant = 'mono', class: className = '' } = Astro.props;
+
+const base =
+  'inline-flex items-center rounded-sm border px-2 py-0.5 text-micro leading-relaxed whitespace-nowrap';
+
+const variants = {
+  mono: 'border-line-subtle bg-surface-1 text-muted font-mono',
+  plain: 'border-line-subtle bg-surface-1 text-muted',
+  accent: 'border-accent-low/40 bg-accent-wash text-accent-soft font-mono',
+} as const;
+---
+
+<span class:list={[base, variants[variant], className]}><slot /></span>
