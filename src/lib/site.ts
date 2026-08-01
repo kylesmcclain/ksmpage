@@ -22,8 +22,9 @@ export const SITE = {
   role: 'Infrastructure & Security Systems Engineer',
   shortRole: 'Systems Administrator',
   title: 'Kyle McClain — Infrastructure & Security Systems Engineer',
+  // Kept under 160 characters so search results do not truncate it mid-claim.
   description:
-    'Infrastructure and security engineer with 10+ years across healthcare, finance, and the public sector. 99.9% uptime, HIPAA-scoped cloud platforms, zero-downtime cutovers.',
+    'Infrastructure and security engineer across healthcare, finance, and public sector. 99.9% uptime, HIPAA-scoped cloud, zero-downtime cutovers.',
   tagline: 'Infrastructure that stays up when the stakes are clinical.',
   locale: 'en_US',
   /** Years of professional experience, computed from the first role's start date. */
